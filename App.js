@@ -42,14 +42,14 @@ app.use((err, req, res, next) => {
 // 🔥 ATENÇÃO AQUI: Mudamos de { force: true } para { alter: true }
 // Se deixar 'force: true', toda vez que o Render "acordar", ele vai APAGAR seu banco e resetar tudo.
 sequelize.sync({ alter: true }).then(async () => {
-  console.log('Banco de dados sincronizado.');
+  console.log('Banco de dados PostgreSQL sincronizado na nuvem! 🚀');
   
-  // O seed só deve rodar se o banco estiver vazio, mas para fins de teste no Render:
+  // O seu seed original do SESI
   const { seedInitial } = require('./database/seed');
   await seedInitial();
   
   app.listen(PORT, () => {
-    console.log(`Servidor SESI/SENAI rodando na porta ${PORT}`);
+    console.log(`Servidor rodando com sucesso na porta ${PORT}`);
   });
 }).catch(err => {
   console.error('Erro ao sincronizar banco:', err);
