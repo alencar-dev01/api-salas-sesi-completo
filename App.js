@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 🚫 COMENTADO PARA NÃO DAR ERRO NO RENDER:
-// app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // API Routes
 app.use('/api/auth',            require('./routes/auth'));
@@ -31,11 +31,11 @@ app.use('/api/conhecimento',    require('./routes/baseConhecimento'));
 app.use('/api/admin',           require('./routes/admin'));
 
 // 🚫 COMENTADO PARA NÃO DAR ERRO NO RENDER:
-// app.get('*', (req, res) => {
-//   if (!req.path.startsWith('/api')) {
-//     res.sendFile(path.join(__dirname, '../frontend/index.html'));
-//   }
-// });
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  }
+});
 
 // Middleware de erro global
 app.use((err, req, res, next) => {
@@ -45,7 +45,7 @@ app.use((err, req, res, next) => {
 
 // 🔥 ATENÇÃO AQUI: Mudamos de { force: true } para { alter: true }
 // Se deixar 'force: true', toda vez que o Render "acordar", ele vai APAGAR seu banco e resetar tudo.
-sequelize.sync({ alter: true }).then(async () => {
+sequelize.sync().then(async () => {
   console.log('Banco de dados PostgreSQL sincronizado na nuvem! 🚀');
   
   // O seu seed original do SESI
