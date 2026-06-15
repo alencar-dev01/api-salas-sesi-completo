@@ -18,24 +18,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 🚫 COMENTADO PARA NÃO DAR ERRO NO RENDER:
-// app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // API Routes
 app.use('/api/auth',            require('./routes/auth'));
 app.use('/api/users',           require('./routes/users'));
 app.use('/api/salas',           require('./routes/salas'));
 app.use('/api/reservas',        require('./routes/reservas'));
-app.use('/api/chamados',        require('./routes/chamados'));
+// app.use('/api/chamados',        require('./routes/chamados')); // removido/desativado: Chamados - plano futuro
 app.use('/api/impressoras',     require('./routes/impressoras'));
 app.use('/api/conhecimento',    require('./routes/baseConhecimento'));
 app.use('/api/admin',           require('./routes/admin'));
 
 // 🚫 COMENTADO PARA NÃO DAR ERRO NO RENDER:
-// app.get('*', (req, res) => {
-//   if (!req.path.startsWith('/api')) {
-//     res.sendFile(path.join(__dirname, '../frontend/index.html'));
-//   }
-// });
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  }
+});
 
 // Middleware de erro global
 app.use((err, req, res, next) => {

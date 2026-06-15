@@ -19,9 +19,9 @@ router.get('/auditoria', apenasAdmin, c.logListar);
 router.get('/bloqueios', apenasAdmin, c.bloqueioListar);
 router.post('/bloqueios', apenasAdmin, c.bloqueioCriar);
 router.delete('/bloqueios/:id', apenasAdmin, c.bloqueioExcluir);
-router.get('/manutencao-preventiva', apenasAdmin, c.manListar);
-router.post('/manutencao-preventiva', apenasAdmin, c.manCriar);
-router.put('/manutencao-preventiva/:id', apenasAdmin, c.manAtualizar);
+// router.get('/manutencao-preventiva', apenasAdmin, c.manListar);
+// router.post('/manutencao-preventiva', apenasAdmin, c.manCriar);
+// router.put('/manutencao-preventiva/:id', apenasAdmin, c.manAtualizar);
 router.get('/relatorios', apenasAdmin, c.relatorios);
 router.get('/dashboard-executivo', apenasAdmin, c.dashboardExecutivo);
 
