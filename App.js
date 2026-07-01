@@ -13,7 +13,7 @@ const reservaRoutes = require('./routes/reservas');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-import './services/cleanupService.js';// Middlewares
+import './services/cleanupService.js';
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
