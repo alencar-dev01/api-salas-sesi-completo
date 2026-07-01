@@ -32,11 +32,11 @@ app.use('/api/conhecimento',    require('./routes/baseConhecimento'));
 app.use('/api/admin',           require('./routes/admin'));
 
 // 🚫 COMENTADO PARA NÃO DAR ERRO NO RENDER:
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-  }
-});
+// app.get('*', (req, res) => {
+//   if (!req.path.startsWith('/api')) {
+//     res.sendFile(path.join(__dirname, '../frontend/index.html'));
+//   }
+// });
 
 // Middleware de erro global
 app.use((err, req, res, next) => {
