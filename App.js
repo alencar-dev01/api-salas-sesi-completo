@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const { sequelize } = require('./models');
 
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const salaRoutes = require('./routes/salas');
@@ -12,6 +13,7 @@ const reservaRoutes = require('./routes/reservas');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+import './services/cleanupService.js';
 // Middlewares
 app.use(cors());
 app.use(express.json());
