@@ -1,23 +1,22 @@
-import cron from 'node-cron';
-import db from '../models/index.js';
-import { Op } from 'sequelize';
+const cron = require('node-cron');
+const db = require('../models/index');
+const { Op } = require('sequelize');
 
-// O código '0 * * * *' faz a tarefa rodar de hora em hora (no minuto 0 de cada hora)
+// Executa a tarefa de hora em hora
 cron.schedule('0 * * * *', async () => {
   console.log('🔄 [CRON] Verificando e limpando reservas finalizadas há mais de 24 horas...');
 
   try {
-    // 1. Calcula o momento exato de 24 horas atrás
     const vinteQuatroHorasAtras = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-    // 2. Executa a deleção no banco de dados
     const reservasDeletadas = await db.Reserva.destroy({
       where: {
         dataFim: {
-          [Op.lt]: vinteQuatroHorasAtras 
+          [Op.lt]: vinteQuatroHorasAtras
         },
-        
-        status: { [Op.in]: ['Finalizada'] } 
+
+        status: { [Op.in]: ['Finalizada'] }
+
       }
     });
 
