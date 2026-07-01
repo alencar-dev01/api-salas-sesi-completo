@@ -3,17 +3,27 @@ const { Reserva, Sala, User } = require('../models');
 const { Op } = require('sequelize');
 
 // Verifica conflito de horário
+// Verifica conflito de horário de forma infalível
 const verificarConflito = async (salaId, data, horaInicio, horaFim, excluirId = null) => {
+  // Garantia extra: Se o front-end enviar apenas "10:30", padroniza para "10:30:00" 
+  // para evitar problemas de comparação de strings se o seu banco salvar com segundos.
+  const inicioFormatado = horaInicio.length === 5 ? `${horaInicio}:00` : horaInicio;
+  const fimFormatado = horaFim.length === 5 ? `${horaFim}:00` : horaFim;
+
   const where = {
     salaId,
     data,
     status: { [Op.ne]: 'cancelada' },
-    [Op.or]: [
-      // Nova reserva começa durante uma existente
-      { horaInicio: { [Op.lt]: horaFim }, horaFim: { [Op.gt]: horaInicio } }
-    ]
+    // Regra matemática universal de sobreposição de intervalos:
+    // O início registrado deve ser MENOR que o fim desejado E o fim registrado deve ser MAIOR que o início desejado.
+    horaInicio: { [Op.lt]: fimFormatado },
+    horaFim: { [Op.gt]: inicioFormatado }
   };
-  if (excluirId) where.id = { [Op.ne]: excluirId };
+
+  if (excluirId) {
+    where.id = { [Op.ne]: excluirId };
+  }
+
   const conflito = await Reserva.findOne({ where });
   return conflito;
 };
