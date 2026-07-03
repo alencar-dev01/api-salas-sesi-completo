@@ -181,10 +181,16 @@ const excluir = async (req, res) => {
     const reserva = await Reserva.findOne({ where });
     if (!reserva) return res.status(404).json({ erro: 'Reserva não encontrada.' });
 
-    await reserva.update({ status: 'cancelada' });
-    res.json({ mensagem: 'Reserva cancelada com sucesso.' });
+    // 🔒 TRAVA DE SEGURANÇA: Só permite se o status atual for 'finalizada'
+    if (reserva.status !== 'finalizada') {
+      return res.status(400).json({ erro: 'Apenas reservas finalizadas podem ser excluídas permanentemente.' });
+    }
+
+    // DELETA PERMANENTEMENTE DO BANCO DE DADOS
+    await reserva.destroy();
+    res.json({ mensagem: 'Reserva deletada permanentemente do sistema.' });
   } catch (err) {
-    res.status(500).json({ erro: 'Erro ao cancelar reserva.' });
+    res.status(500).json({ erro: 'Erro ao deletar reserva.' });
   }
 };
 
