@@ -215,4 +215,26 @@ const dashboard = async (req, res) => {
   }
 };
 
-module.exports = { listar, calendario, obter, criar, atualizar, excluir, dashboard };
+const getReservasPortaria = async (req, res) => {
+  try {
+    const hoje = new Date().toISOString().split('T')[0];
+
+    const reservas = await Reserva.findAll({
+      where: {
+        data: hoje,          // Apenas agendamentos de hoje
+        status: 'confirmada' // Apenas o que está confirmado
+      },
+      include: [
+        { model: Sala, as: 'sala', attributes: ['nome', 'localizacao'] }
+      ],
+      order: [['horaInicio', 'ASC']] // Ordena por horário cronológico
+    });
+
+    res.json(reservas);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao carregar dados da portaria.' });
+  }
+};
+
+// Exportações atualizadas incluindo a nova rota pública
+module.exports = { listar, calendario, obter, criar, atualizar, excluir, dashboard, getReservasPortaria };
